@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,11 +79,36 @@ app.MapGet("/error/test", () => { throw new Exception("test"); }).RequireCors("A
 
 /* Minimal API using [EnableCors] attribute
  *      Microsoft's recommended way to implement CORS on a per-endpoint basis
- *      Requires using Microsoft.AspNetCore.Cors namespace
+ *          Requires using Microsoft.AspNetCore.Cors namespace
+ *      Response cache set to NoStore to prevent anyone from caching errors
+ *          Requires using Microsoft.AspNetCore.Mvc namespace
 */
 
-app.MapGet("/error", [EnableCors("AnyOrigin")] () => Results.Problem());
-app.MapGet("/error/test", [EnableCors("AnyOrigin")] () => { throw new Exception("test"); });
+app.MapGet("/error", 
+    [EnableCors("AnyOrigin")]
+    [ResponseCache(NoStore = true)]         
+    () => Results.Problem());
+app.MapGet("/error/test",
+    [EnableCors("AnyOrigin")]
+    [ResponseCache(NoStore = true)]
+    () => { 
+        throw new Exception("test");
+    });
+
+//Example of how to use Code on Demand (COD) REST constraint
+app.MapGet("/cod/test",
+    [EnableCors("AnyOrigin")]
+    [ResponseCache(NoStore = true)] () =>
+    Results.Text("<script>" +
+       "window.alert('Your client supports JavaScript!" +
+       "\\r\\n\\r\\n" +
+       $"Server time (UTC): {DateTime.UtcNow.ToString("o")}" +
+       "\\r\\n" +
+       "Client time (UTC): ' + new Date().toISOString());" +
+       "</script>" +
+       "<noscript>Your client does not support JavaScript</noscript>",
+       "text/html"
+    ));
 
 app.MapControllers();
 
