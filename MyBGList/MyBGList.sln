@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBGList", "MyBGList\MyBGList.csproj", "{94773FB1-9453-4B4B-99BA-D01A0C13EA1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBGList_ApiVersioning", "..\Chapter_03\API Versioning Example\MyBGList_ApiVersioning\MyBGList_ApiVersioning.csproj", "{99BEA988-B947-4E78-AA28-DEB9B21C1E5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{94773FB1-9453-4B4B-99BA-D01A0C13EA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94773FB1-9453-4B4B-99BA-D01A0C13EA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94773FB1-9453-4B4B-99BA-D01A0C13EA1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99BEA988-B947-4E78-AA28-DEB9B21C1E5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BEA988-B947-4E78-AA28-DEB9B21C1E5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BEA988-B947-4E78-AA28-DEB9B21C1E5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BEA988-B947-4E78-AA28-DEB9B21C1E5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
