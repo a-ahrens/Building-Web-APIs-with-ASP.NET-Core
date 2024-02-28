@@ -5,10 +5,6 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*More Restricted Cors Policy
- *  Creating a default policy to handle requests from a known origin 
- *  Creating an any origin policy to handle requests that don't need restrictions (edge cases)*  
-*/
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(cfg =>
@@ -25,6 +21,10 @@ builder.Services.AddCors(options =>
         cfg.AllowAnyMethod();
     });
 });
+
+/* API versioning example:
+ * 
+*/
 
 builder.Services.AddApiVersioning(options =>
 {
@@ -67,7 +67,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint(
+            $"/swagger/v1/swagger.json",
+            $"MyBGList v1");
+        options.SwaggerEndpoint(
+            $"/swagger/v2/swagger.json",
+            $"MyBGList v2");
+    });
 }
 
 if (app.Configuration.GetValue<bool>("UseDeveloperExceptionPage"))
@@ -88,13 +96,6 @@ app.UseCors();
 
 app.UseAuthorization();
 
-/* Examples of Minimal API routes using endpoint routing. 
- *      Not the suggested approach due to issues with RequireCors() extension method not supporting preflight requests
- 
-app.MapGet("/error", () => Results.Problem()).RequireCors("AnyOrigin");
-app.MapGet("/error/test", () => { throw new Exception("test"); }).RequireCors("AnyOrigin");
-
- */
 
 /* Minimal API using [EnableCors] attribute
  *      Microsoft's recommended way to implement CORS on a per-endpoint basis
@@ -103,11 +104,15 @@ app.MapGet("/error/test", () => { throw new Exception("test"); }).RequireCors("A
  *          Requires using Microsoft.AspNetCore.Mvc namespace
 */
 
-app.MapGet("/error", 
+app.MapGet("/v{version:ApiVersion}/error",
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [EnableCors("AnyOrigin")]
     [ResponseCache(NoStore = true)]         
     () => Results.Problem());
-app.MapGet("/error/test",
+app.MapGet("/v{version:ApiVersion}/error/test",
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [EnableCors("AnyOrigin")]
     [ResponseCache(NoStore = true)]
     () => { 
@@ -115,7 +120,9 @@ app.MapGet("/error/test",
     });
 
 //Example of how to use Code on Demand (COD) REST constraint
-app.MapGet("/cod/test",
+app.MapGet("/v{version:ApiVersion}/cod/test",
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [EnableCors("AnyOrigin")]
     [ResponseCache(NoStore = true)] () =>
     Results.Text("<script>" +

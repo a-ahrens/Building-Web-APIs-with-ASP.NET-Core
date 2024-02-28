@@ -1,4 +1,4 @@
-﻿namespace MyBGList.DTO
+﻿namespace MyBGList_ApiVersioning.DTO.v1
 {
 
     //DTO Class that contains descriptive links for Uniform Interface purposes

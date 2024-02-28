@@ -1,4 +1,4 @@
-﻿namespace MyBGList
+﻿namespace MyBGList_ApiVersioning
 {
     public class BoardGame
     {

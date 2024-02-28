@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyBGList.DTO;
-using System.Xml.Linq;
+using MyBGList_ApiVersioning.DTO.v1;
 
-namespace MyBGList.Controllers
+namespace MyBGList_ApiVersioning.Controllers.v1
 {
-    [Route("[controller]")]
+    [Route("v{version:apiversion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class BoardGamesController : ControllerBase
     {
         private readonly ILogger<BoardGamesController> _logger;
@@ -14,7 +14,7 @@ namespace MyBGList.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name  = "GetBoardGames")]
+        [HttpGet(Name = "GetBoardGames")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)] //sets up a public cache with a max-age of 60 sec for that response
         public RestDTO<BoardGame[]> Get()
         {
@@ -45,7 +45,10 @@ namespace MyBGList.Controllers
                 },
                 Links = new List<LinkDTO>
                 {
-                    new LinkDTO(Url.Action(null, "BoardGames", null, Request.Scheme)!, "self", "GET"),
+                    new LinkDTO(
+                        Url.Action(null, "BoardGames", null, Request.Scheme)!, 
+                        "self", 
+                        "GET"),
                 }
             };
         }
